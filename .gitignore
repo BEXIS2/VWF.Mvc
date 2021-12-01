@@ -4,3 +4,5 @@ bin
 *.suo
 Workspace
 /MetricResults/*.mrx
+/.vs/Vaiona.Base/v17/TestStore/0
+/.vs/Vaiona.Base/project-colors.json
