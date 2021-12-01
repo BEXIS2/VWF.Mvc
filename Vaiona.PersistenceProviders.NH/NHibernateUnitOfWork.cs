@@ -9,6 +9,7 @@ using System.Web;
 using System.Diagnostics.Contracts;
 using System.Data.SqlClient;
 using System.Data;
+using System.Data.Common;
 
 namespace Vaiona.PersistenceProviders.NH
 {
@@ -254,7 +255,7 @@ namespace Vaiona.PersistenceProviders.NH
                 {
                     using (ITransaction transaction = this.Session.BeginTransaction())
                     {
-                        IDbCommand command = this.Session.Connection.CreateCommand();
+                        DbCommand command = this.Session.Connection.CreateCommand();
                         command.CommandTimeout = LongQueryTimeOut;
                         command.Connection = this.Session.Connection;
 
@@ -298,7 +299,7 @@ namespace Vaiona.PersistenceProviders.NH
                 {
                     using (ITransaction transaction = this.Session.BeginTransaction())
                     {
-                        IDbCommand command = this.Session.Connection.CreateCommand();
+                        DbCommand command = this.Session.Connection.CreateCommand();
                         command.CommandTimeout = LongQueryTimeOut;
                         command.Connection = this.Session.Connection;
 

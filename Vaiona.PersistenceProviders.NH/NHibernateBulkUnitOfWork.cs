@@ -224,7 +224,7 @@ namespace Vaiona.PersistenceProviders.NH
             {
                 using (ITransaction transaction = this.Session.BeginTransaction())
                 {
-                    IDbCommand command = this.Session.Connection.CreateCommand();
+                    DbCommand command = this.Session.Connection.CreateCommand();
                     command.CommandTimeout = LongQueryTimeOut;
                     command.Connection = this.Session.Connection;
 
@@ -264,7 +264,7 @@ namespace Vaiona.PersistenceProviders.NH
             {
                 using (ITransaction transaction = this.Session.BeginTransaction())
                 {
-                    IDbCommand command = this.Session.Connection.CreateCommand();
+                    DbCommand command = this.Session.Connection.CreateCommand();
                     command.Connection = this.Session.Connection;
 
                     transaction.Enlist(command);

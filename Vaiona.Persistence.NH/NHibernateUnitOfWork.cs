@@ -6,6 +6,7 @@ using NHibernate;
 using Vaiona.Persistence.Api;
 using NHibernate.Context;
 using System.Web;
+using System.Data;
 
 namespace Vaiona.Persistence.NH
 {
@@ -145,6 +146,46 @@ namespace Vaiona.Persistence.NH
             AfterCommit = null;
             BeforeIgnore = null;
             AfterIgnore = null;
+        }
+
+        public IReadOnlyRepository<TEntity> GetReadOnlyRepository<TEntity>(Api.CacheMode cacheMode = Api.CacheMode.Ignore) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearCache(bool applyChanages = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Execute<T>(string queryName, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> ExecuteList<T>(string queryName, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T ExecuteDynamic<T>(string queryString, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ExecuteNonQuery(string queryString, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object ExecuteScalar(string queryString, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable ExecuteQuery(string queryString, Dictionary<string, object> parameters = null)
+        {
+            throw new NotImplementedException();
         }
 
         public event EventHandler BeforeCommit;

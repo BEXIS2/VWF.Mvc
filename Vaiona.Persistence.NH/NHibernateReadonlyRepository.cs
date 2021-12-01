@@ -16,6 +16,8 @@ namespace Vaiona.Persistence.NH
     {
         protected NHibernateUnitOfWork UoW = null;
 
+        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
+
         internal NHibernateReadonlyRepository(NHibernateUnitOfWork uow)
         {
             this.UoW = uow;
@@ -179,6 +181,16 @@ namespace Vaiona.Persistence.NH
             {
                 NHibernateUtil.Initialize(proxy);
             }
+        }
+
+        public void Evict()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Evict(object id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -22,8 +22,8 @@ namespace Vaiona.Persistence.NH
 
         public bool IsTransient(object proxy)
         {
-            bool result = NHibernate.Engine.ForeignKeys.IsTransient("", proxy, true, (this.UnitOfWork as NHibernateUnitOfWork).Session.GetSessionImplementation());
-            return (result);
+            bool? result = NHibernate.Engine.ForeignKeys.IsTransientSlow(proxy.GetType().FullName, proxy, (this.UnitOfWork as NHibernateUnitOfWork).Session.GetSessionImplementation());
+            return (result==null?false:(bool)result);
         }
 
         public TEntity Merge(TEntity entity)
@@ -79,6 +79,16 @@ namespace Vaiona.Persistence.NH
         {
             // check unsaved-value-check to know whether object is new or updated. use this info for state management
             // throw new NotImplementedException();
+        }
+
+        public bool Delete(IEnumerable<long> entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Execute(string queryString, Dictionary<string, object> parameters, bool isNativeOrORM = false, int timeout = 100)
+        {
+            throw new NotImplementedException();
         }
     }
 }

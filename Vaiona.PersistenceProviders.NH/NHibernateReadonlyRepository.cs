@@ -64,8 +64,9 @@ namespace Vaiona.PersistenceProviders.NH
                 isim = (this.UnitOfWork as NHibernateUnitOfWork).Session.GetSessionImplementation();
             else if (UoW is NHibernateBulkUnitOfWork)
                 isim = (this.UnitOfWork as NHibernateBulkUnitOfWork).Session.GetSessionImplementation();
-            bool result = NHibernate.Engine.ForeignKeys.IsTransient(proxy.GetType().FullName, proxy, true, isim);
-            return (result);
+            bool? result = NHibernate.Engine.ForeignKeys.IsTransientSlow(proxy.GetType().FullName, proxy, isim);
+            return (result == null ? false : (bool)result);
+        
         }
 
         public TEntity Reload(TEntity entity)

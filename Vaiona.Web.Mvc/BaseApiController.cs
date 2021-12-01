@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Vaiona.Web.Mvc
 {
-    public abstract class BaseApiController : ApiController
+    public abstract class BaseApiController:ApiController
     {
         protected IList<IDisposable> Disposables;
 

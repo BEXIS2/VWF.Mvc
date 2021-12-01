@@ -1,5 +1,4 @@
-﻿using System.Web;
-using NHibernate;
+﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System.Diagnostics.Contracts;
@@ -7,7 +6,6 @@ using System.IO;
 using System;
 using System.Text.RegularExpressions;
 using Vaiona.Persistence.Api;
-using NHibernate.Context;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +17,12 @@ namespace Vaiona.Persistence.NH
         private static Configuration cfg;
         private static string configFile = "";
         private static List<string> mappingFolders = new List<string>();
+
+        public object Factory => throw new NotImplementedException();
+
+        public IUnitOfWorkFactory UnitOfWorkFactory => throw new NotImplementedException();
+
+        public int PreferredPushSize => throw new NotImplementedException();
 
         public void Configure(string configFilePath, List<string> mappingFolders, string databaseDilect, string connectionString = "", bool useNeutralMapping = false)
         {
@@ -236,6 +240,21 @@ namespace Vaiona.Persistence.NH
                 if (session == null) continue;
                 endSession(session, false);
             }
+        }
+
+        public void Configure(string connectionString = "", string databaseDilect = "DB2Dialect", string fallbackFoler = "Default", bool showQueries = false, bool configureModules = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateSchema(bool generateScript = false, bool executeAgainstTargetDB = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetProperty(string propertyName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

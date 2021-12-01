@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vaiona.MultiTenancy.Api</RootNamespace>
     <AssemblyName>Vaiona.MultiTenancy.Api</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,11 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vaiona.IoC\Vaiona.IoC.csproj">
-      <Project>{29A7BE0F-A17C-4AE8-8CA1-15FE4DD74129}</Project>
+      <Project>{29a7be0f-a17c-4ae8-8ca1-15fe4dd74129}</Project>
       <Name>Vaiona.IoC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Vaiona.Model\Vaiona.Model.csproj">
-      <Project>{A60AC05F-8C9A-4EFD-9826-452E6049DA4D}</Project>
+      <Project>{a60ac05f-8c9a-4efd-9826-452e6049da4d}</Project>
       <Name>Vaiona.Model</Name>
     </ProjectReference>
   </ItemGroup>
