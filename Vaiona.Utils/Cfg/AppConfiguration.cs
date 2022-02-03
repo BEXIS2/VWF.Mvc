@@ -48,44 +48,30 @@ namespace Vaiona.Utils.Cfg
             }
         }
 
-        public static string ApplicationName
-        {
-            get
-            {
-                try
-                {
-                    return (ConfigurationManager.AppSettings["ApplicationName"]);
-                }
-                catch { return (string.Empty); }
-            }
-        }
+        //public static string ApplicationName
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return (ConfigurationManager.AppSettings["ApplicationName"]);
+        //        }
+        //        catch { return (string.Empty); }
+        //    }
+        //}
 
-        public static string ApplicationVersion
-        {
-            get
-            {
-                try
-                {
-                    return (ConfigurationManager.AppSettings["ApplicationVersion"]);
-                }
-                catch { return (string.Empty); }
-            }
-        }
+        //public static string ApplicationVersion
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return (ConfigurationManager.AppSettings["ApplicationVersion"]);
+        //        }
+        //        catch { return (string.Empty); }
+        //    }
+        //}
 
-        public static string ApplicationInfo
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(ApplicationName))
-                {
-                    if (!string.IsNullOrWhiteSpace(ApplicationVersion))
-                        return (string.Format("{0} {1}", ApplicationName, ApplicationVersion));
-                    return (string.Format(ApplicationName));
-                }
-                return string.Empty;
-            }
-        }
-        
         public static string DefaultCulture
         {
             get
@@ -156,7 +142,7 @@ namespace Vaiona.Utils.Cfg
                     path = ConfigurationManager.AppSettings["ApplicationRoot"]; // This key appears in app.conig of unit testing projects only.
                 }
                 catch { }
-                if(string.IsNullOrWhiteSpace(path))
+                if (string.IsNullOrWhiteSpace(path))
                     path = AppDomain.CurrentDomain.BaseDirectory;
                 return (path);
             }
@@ -177,7 +163,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         /// <summary>
-        /// DataPath shows the root folder containing business data. 
+        /// DataPath shows the root folder containing business data.
         /// It should be defined in the web.config otherwise it returns a 'data' folder beneath the application's root folder
         /// </summary>
         public static string DataPath
@@ -189,7 +175,7 @@ namespace Vaiona.Utils.Cfg
                 {
                     path = ConfigurationManager.AppSettings["DataPath"];
                 }
-                catch{}
+                catch { }
                 return (path);
             }
         }
@@ -216,6 +202,7 @@ namespace Vaiona.Utils.Cfg
         //}
 
         private static string workspaceRootPath = string.Empty;
+
         public static string WorkspaceRootPath
         {
             get
@@ -348,6 +335,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? cacheQueryResults = null;
+
         /// <summary>
         /// This property is accessed fequently, to reduce the web.config access, it uses a chached field.
         /// </summary>
@@ -358,7 +346,7 @@ namespace Vaiona.Utils.Cfg
                 if (cacheQueryResults.HasValue)
                     return cacheQueryResults.Value;
                 try
-                {                    
+                {
                     string s = ConfigurationManager.AppSettings["CacheQueryResults"];
                     if (string.IsNullOrEmpty(s))
                         cacheQueryResults = false;
@@ -371,6 +359,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static string themesPath;
+
         public static string ThemesPath
         {
             get
@@ -390,6 +379,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static string defaultThemeName;
+
         public static string DefaultThemeName
         {
             get
@@ -409,6 +399,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static string activeLayoutName;
+
         public static string ActiveLayoutName
         {
             get
@@ -507,7 +498,7 @@ namespace Vaiona.Utils.Cfg
         {
             try
             {
-                userName = AppConfiguration.HttpContext.User.Identity.Name; // Thread.CurrentPrincipal.Identity.Name; 
+                userName = AppConfiguration.HttpContext.User.Identity.Name; // Thread.CurrentPrincipal.Identity.Name;
                 return (Thread.CurrentPrincipal.Identity.IsAuthenticated); //Thread.CurrentPrincipal.Identity.IsAuthenticated
             }
             catch { return false; }
@@ -521,11 +512,11 @@ namespace Vaiona.Utils.Cfg
             //roles[0] = string.IsNullOrEmpty(roleName) ? Constants.GuestRole : roleName;
             //return (new GenericPrincipal(identity, roles));
             return (p);
-            //JApplication.CurrentHttpContext.User.Identity.IsAuthenticated = 
-
+            //JApplication.CurrentHttpContext.User.Identity.IsAuthenticated =
         }
 
         private static bool? isLoggingEnable = null;
+
         public static bool IsLoggingEnable
         {
             get
@@ -546,6 +537,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? isPerformanceLoggingEnable = null;
+
         public static bool IsPerformanceLoggingEnable
         {
             get
@@ -566,6 +558,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? isDiagnosticLoggingEnable = null;
+
         public static bool IsDiagnosticLoggingEnable
         {
             get
@@ -586,6 +579,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? isCallLoggingEnable = null;
+
         public static bool IsCallLoggingEnable
         {
             get
@@ -606,6 +600,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? isExceptionLoggingEnable = null;
+
         public static bool IsExceptionLoggingEnable
         {
             get
@@ -626,6 +621,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static bool? isDataLoggingEnable = null;
+
         public static bool IsDataLoggingEnable
         {
             get
@@ -646,6 +642,7 @@ namespace Vaiona.Utils.Cfg
         }
 
         private static string tenantId = "";
+
         public static string TenantId
         {
             get
@@ -665,8 +662,8 @@ namespace Vaiona.Utils.Cfg
             }
         }
 
-
         private static int? conversationIsolationLevel = null;
+
         /// <summary>
         /// Determines whether conversations (database sessions) are shared between units of work.
         /// 1: one session per unit of work, 2: shared session between units per HTTP request

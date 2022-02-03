@@ -1,33 +1,38 @@
-﻿using System;
+﻿using BExIS.Utils;
+using BExIS.Utils.Config;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using Vaiona.IoC;
 using Vaiona.Model.MTnt;
 using Vaiona.Utils.Cfg;
 
 namespace Vaiona.Web.Mvc.Models
 {
-    public class PresentationModel: Dictionary<string, object>
+    public class PresentationModel : Dictionary<string, object>
     {
         private string viewTitle = string.Empty;
+
         internal string ViewTitle // needs a proper design. internal for the time being...
-        { 
+        {
             get
-            { 
+            {
                 return viewTitle;
-            } 
-            set 
+            }
+            set
             {
                 viewTitle = value;
-            } 
+            }
         }
 
         public static string GetGenericViewTitle(string viewTitle)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(viewTitle));
+            GeneralSettings generalSettings = IoCFactory.Container.Resolve<GeneralSettings>();
 
-            string appInfo = AppConfiguration.ApplicationInfo;
+            string appInfo = generalSettings.ApplicationInfo;
             if (!string.IsNullOrWhiteSpace(appInfo))
             {
                 return string.Format("{0} - {1}", appInfo, viewTitle);
@@ -47,6 +52,5 @@ namespace Vaiona.Web.Mvc.Models
             }
             return viewTitle;
         }
-
     }
 }
