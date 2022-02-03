@@ -23,17 +23,24 @@ namespace Vaiona.PersistenceProviders.NH
     {
         private static ISessionFactory sessionFactory;
         private static Configuration cfg;
+
         //private static string configFile = "";
         private IUnitOfWorkFactory uowFactory;
-        Dictionary<string, List<FileInfo>> componentPostInstallationFiles = new Dictionary<string, List<FileInfo>>();
-        Dictionary<string, List<FileInfo>> modulePostInstallationFiles = new Dictionary<string, List<FileInfo>>();
-        bool showQueries;
 
-        public object Factory { get { return sessionFactory; } }
-        public object Configuration { get { return cfg; } }
-        public bool ShowQueries { get { return showQueries; } }
+        private Dictionary<string, List<FileInfo>> componentPostInstallationFiles = new Dictionary<string, List<FileInfo>>();
+        private Dictionary<string, List<FileInfo>> modulePostInstallationFiles = new Dictionary<string, List<FileInfo>>();
+        private bool showQueries;
 
-        public IUnitOfWorkFactory UnitOfWorkFactory { get { return uowFactory; } }
+        public object Factory
+        { get { return sessionFactory; } }
+        public object Configuration
+        { get { return cfg; } }
+        public bool ShowQueries
+        { get { return showQueries; } }
+
+        public IUnitOfWorkFactory UnitOfWorkFactory
+        { get { return uowFactory; } }
+
         public NHibernatePersistenceManager()
         {
             //uowFactory = new NHibernateUnitOfWorkFactory(this, cfg); // it is populated at start time
@@ -64,7 +71,7 @@ namespace Vaiona.PersistenceProviders.NH
                 if (showQueries)
                     cfg.SetInterceptor(new NHInterceptor());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LoggerFactory.GetFileLogger().LogCustom($"Failed to configure the persistence, see details: '{ex.Message}'");
                 throw ex;
@@ -73,7 +80,7 @@ namespace Vaiona.PersistenceProviders.NH
             // This way the sessionFactory.GetCurrentSession will call the CurrentSession method of this class.
             cfg.Properties[NHibernate.Cfg.Environment.CurrentSessionContextClass] = typeof(NHibernateCurrentSessionProvider).AssemblyQualifiedName;
 
-            // in case of having specific queries or mappings for different dialects, it is better (and possible) 
+            // in case of having specific queries or mappings for different dialects, it is better (and possible)
             // to develop different mapping files and externalizing queries
             registerMappings(cfg, fallbackFolder, databaseDilect, AppConfiguration.WorkspaceComponentRoot, ref componentPostInstallationFiles, false);
 
@@ -131,7 +138,7 @@ namespace Vaiona.PersistenceProviders.NH
 
         public void UpdateSchema(bool generateScript = false, bool executeAgainstTargetDB = true)
         {
-            Action<string> updateExport = x => 
+            Action<string> updateExport = x =>
             {
                 string fileName = Path.Combine(AppConfiguration.WorkspaceRootPath, "temp", "update.sql");
                 using (var file = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))
@@ -170,7 +177,6 @@ namespace Vaiona.PersistenceProviders.NH
                     trans.Commit();
                 }
             }
-
         }
 
         private void executePostInstallationScript(FileInfo postInstallationScript)
@@ -228,7 +234,6 @@ namespace Vaiona.PersistenceProviders.NH
             }
         }
 
-
         public int PreferredPushSize
         {
             get
@@ -246,6 +251,7 @@ namespace Vaiona.PersistenceProviders.NH
             //    return "2400";
             return cfg.GetProperty(propertyName);
         }
+
         /// <summary>
         /// Any component dealing with data should have a Db folder in its workspace folder containing the Mappings folder
         /// If the components accesses data through other components' APIs there is no need to provide the mapping again
@@ -256,7 +262,7 @@ namespace Vaiona.PersistenceProviders.NH
         /// <param name="componentOrModulePath">if module: this is the root folder of all the modules. if component, the root folder containing all the components</param>
         /// <param name="post">holds a reference to the post installation files compiled from merging of the PostObjects folder of the fallback and dialect folders</param>
         /// <param name="isModule">Determines whether the folder contains modules or components. False means: components.</param>
-        private void registerMappings(Configuration cfg, string fallbackFoler, string dialect, string componentOrModulePath, ref Dictionary<string, List<FileInfo>> post, bool isModule=false)
+        private void registerMappings(Configuration cfg, string fallbackFoler, string dialect, string componentOrModulePath, ref Dictionary<string, List<FileInfo>> post, bool isModule = false)
         {
             if (!Directory.Exists(componentOrModulePath))
                 return;
@@ -281,14 +287,12 @@ namespace Vaiona.PersistenceProviders.NH
                             Assembly asm = Assembly.Load(asmElement.Attribute("name").Value);
                             cfg.AddAssembly(asm);
                         }
-
                     }
                 }
                 else // its a component, load the mapping files unconditionally.
                 {
                     List<FileInfo> mappingFiles = compileMappingFileList(moduleOrComponentDir, fallbackFoler, dialect, ref post);
                     mappingFiles.ForEach(p => cfg.AddFile(p));
-
                 }
             }
         }
@@ -303,7 +307,7 @@ namespace Vaiona.PersistenceProviders.NH
         /// <param name="post">the reference to the post installation files list</param>
         /// <returns>the merged mapping files list created from fallback and/ or dialect folders</returns>
         private List<FileInfo> compileMappingFileList(DirectoryInfo comDir, string fallbackFolerName, string dialectName, ref Dictionary<string, List<FileInfo>> post)
-        {            
+        {
             string fallbackFolderPath = Path.Combine(comDir.FullName, "Db", "Mappings", fallbackFolerName);
             string dialectFolderPath = Path.Combine(comDir.FullName, "Db", "Mappings", dialectName);
 
@@ -332,7 +336,7 @@ namespace Vaiona.PersistenceProviders.NH
                 {
                     compiledPost.Remove(dup);
                 }
-                // the dialect has added a file                                
+                // the dialect has added a file
                 compiledPost.Add(item);
             }
             post.Add(comDir.Name, compiledPost);
@@ -367,15 +371,15 @@ namespace Vaiona.PersistenceProviders.NH
                 // go through all the folders in the mapping container and add them to the mapping file list, expect for the PostObjects folder
                 // which is a specific folder designed to contain post installation scripts
                 DirectoryInfo mappingRootDir = new DirectoryInfo(mappingPath);
-                
-                foreach (var mappingContainerDir in mappingRootDir.GetDirectories().Where(p=> !p.Name.Equals("PostObjects")))
+
+                foreach (var mappingContainerDir in mappingRootDir.GetDirectories().Where(p => !p.Name.Equals("PostObjects")))
                 {
                     mappingContainerDir.GetFiles().Where(p => p.Name.EndsWith(".hbm.xml")) //filter just the valid mapping files
                         .ToList().ForEach(p =>
                         fileList.Add(string.Format("{0}.{1}", mappingContainerDir.Name, p.Name), p)); // Key: provides a uniqueness control inside the component/ module, required for overwriting procedure
                 }
             }
-            //else // there is no mapping folder, so expect all the mappings to be in the dialect folder or no mapping at all            
+            //else // there is no mapping folder, so expect all the mappings to be in the dialect folder or no mapping at all
             return (fileList);
         }
     }

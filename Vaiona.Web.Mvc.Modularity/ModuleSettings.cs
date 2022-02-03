@@ -12,7 +12,7 @@ namespace Vaiona.Web.Mvc.Modularity
     {
         public ModuleSettings(string moduleId): 
             base(moduleId, 
-                Path.Combine(AppConfiguration.GetModuleWorkspacePath(moduleId), $"{moduleId}.Settings.xml")
+                Path.Combine(AppConfiguration.GetModuleWorkspacePath(moduleId), $"{moduleId}.Settings.json")
                 )
         {
             

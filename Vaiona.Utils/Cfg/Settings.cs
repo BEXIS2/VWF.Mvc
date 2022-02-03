@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,11 +17,11 @@ namespace Vaiona.Utils.Cfg
     public class Settings
     {
         /// <summary>
-        /// Contains the settings entries. 
+        /// Contains the settings entries.
         /// Each entry has a key, a value, and a type.
         /// The type field must match System.TypeCode enumeration, case sensitive.
         /// </summary>
-        protected XElement settingsElement;
+        protected JsonSettings jsonSettings;
 
         /// <summary>
         /// The name of the module or shell or whatever this settings belongs to
@@ -64,19 +65,50 @@ namespace Vaiona.Utils.Cfg
             loadSettings();
         }
 
-        public List<XElement> Entries
+        /// <summary>
+        /// return Settings as a class based on the json
+        /// </summary>
+        /// <returns></returns>
+        public JsonSettings Get()
         {
-            get { return settingsElement.Elements("entry").ToList(); }
-            // set{} in this version, the settings is a readonly object
+            return jsonSettings;
+        }
+
+        public bool Update(JsonSettings _jsonSettings)
+        {
+            jsonSettings = _jsonSettings;
+
+            try
+            {
+                // if file exist, delete before
+                if (File.Exists(settingsFullPath)) File.Delete(settingsFullPath);
+
+                // create file and open it into a stream writer
+                using (StreamWriter file = File.CreateText(settingsFullPath))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    //serialize object directly into file stream
+                    serializer.Serialize(file, _jsonSettings);
+
+                    file.Flush();
+                    file.Close();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("settings update of Module (" + _jsonSettings.Id + ") failed", ex);
+            }
         }
 
         public object GetEntryValue(string entryKey)
         {
-            XElement entry = Entries.Where(p => p.Attribute("key").Value.Equals(entryKey, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            Entry entry = jsonSettings.Entry.Where(p => p.Key.Equals(entryKey, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
             if (entry == null)
                 return null;
-            string value = entry.Attribute("value").Value;
-            string type = entry.Attribute("type").Value;
+            string value = entry.Value;
+            string type = entry.Type;
             var typedValue = Convert.ChangeType(value, (TypeCode)Enum.Parse(typeof(TypeCode), type));
             return typedValue;
         }
@@ -89,9 +121,10 @@ namespace Vaiona.Utils.Cfg
         private void loadSettings()
         {
             FileHelper.WaitForFile(settingsFullPath);
-            using (var stream = File.Open(settingsFullPath, FileMode.Open, FileAccess.Read))
+            using (StreamReader stream = File.OpenText(settingsFullPath))
             {
-                settingsElement = XElement.Load(stream);
+                JsonSerializer serializer = new JsonSerializer();
+                jsonSettings = (JsonSettings)serializer.Deserialize(stream, typeof(JsonSettings));
             }
         }
     }
