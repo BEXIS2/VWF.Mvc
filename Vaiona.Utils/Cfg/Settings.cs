@@ -107,7 +107,7 @@ namespace Vaiona.Utils.Cfg
             Entry entry = jsonSettings.Entry.Where(p => p.Key.Equals(entryKey, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
             if (entry == null)
                 return null;
-            string value = entry.Value;
+            string value = entry.Value.ToString();
             string type = entry.Type;
             var typedValue = Convert.ChangeType(value, (TypeCode)Enum.Parse(typeof(TypeCode), type));
             return typedValue;

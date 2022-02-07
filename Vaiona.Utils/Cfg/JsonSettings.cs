@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Vaiona.Utils.Cfg
 {
     public class JsonSettings
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -19,7 +21,7 @@ namespace Vaiona.Utils.Cfg
     public class Entry
     {
         public string Key { get; set; }
-        public string Value { get; set; }
+        public object Value { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
 
@@ -34,7 +36,7 @@ namespace Vaiona.Utils.Cfg
     public class Attribute
     {
         public string Key { get; set; }
-        public string Value { get; set; }
+        public object Value { get; set; }
         public string Type { get; set; }
     }
 }
