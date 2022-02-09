@@ -30,7 +30,7 @@ namespace Vaiona.Utils.Cfg
 
         /// <summary>
         /// The full path of the setting file. the file should be an XML containg a set of 'entry' items, each having key, value, and type.
-        /// The file itself should follow <id>.settings.xml naming format.
+        /// The file itself should follow <id>.settings.json naming format.
         /// The path can be anywhere, but in general, for the modules, its in the root folder of the modules in the workspace folder.
         /// </summary>
         protected string settingsFullPath = "";
@@ -69,7 +69,7 @@ namespace Vaiona.Utils.Cfg
         /// return Settings as a class based on the json
         /// </summary>
         /// <returns></returns>
-        public JsonSettings Get()
+        public JsonSettings GetAsJsonModel()
         {
             return jsonSettings;
         }
@@ -111,6 +111,15 @@ namespace Vaiona.Utils.Cfg
             string type = entry.Type;
             var typedValue = Convert.ChangeType(value, (TypeCode)Enum.Parse(typeof(TypeCode), type));
             return typedValue;
+        }
+
+        public Item[] GetList(string entryKey)
+        {
+            Entry entry = jsonSettings.Entry.Where(p => p.Key.Equals(entryKey, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            if (entry == null)
+                return null;
+
+            return entry.Item;
         }
 
         private void onCatalogChanged(object source, FileSystemEventArgs e)

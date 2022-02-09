@@ -9,6 +9,7 @@ namespace Vaiona.Web.Mvc
 {
     public abstract class BaseController : Controller
     {
+
         private IList<IDisposable> disposables;
 
         protected BaseController()

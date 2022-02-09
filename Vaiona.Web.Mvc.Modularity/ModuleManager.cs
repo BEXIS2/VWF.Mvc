@@ -500,6 +500,11 @@ namespace Vaiona.Web.Mvc.Modularity
             return get(moduleId);
         }
 
+        public static ModuleSettings GetModuleSettings(string moduleId)
+        {
+            return get(moduleId).Plugin.Settings;
+        }
+
         public static ModuleManifest GetModuleManifest(string moduleId)
         {
             var moduleInfo = get(moduleId);

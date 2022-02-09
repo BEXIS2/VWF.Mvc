@@ -30,9 +30,9 @@ namespace Vaiona.Web.Mvc.Models
         public static string GetGenericViewTitle(string viewTitle)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(viewTitle));
-            GeneralSettings generalSettings = IoCFactory.Container.Resolve<GeneralSettings>();
+            
 
-            string appInfo = generalSettings.ApplicationInfo;
+            string appInfo = GeneralSettings.ApplicationInfo;
             if (!string.IsNullOrWhiteSpace(appInfo))
             {
                 return string.Format("{0} - {1}", appInfo, viewTitle);

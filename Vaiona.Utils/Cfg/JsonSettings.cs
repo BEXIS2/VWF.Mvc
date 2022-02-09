@@ -31,6 +31,16 @@ namespace Vaiona.Utils.Cfg
     public class Item
     {
         public Attribute[] Attribute { get; set; }
+
+        public Attribute GetAttribute(string key)
+        {
+            if (Attribute!=null && Attribute.Any())
+            {
+                return Attribute.Where(a => a.Key.ToLower().Equals("placeholder")).FirstOrDefault();
+            }
+
+            return null;
+        }
     }
 
     public class Attribute
